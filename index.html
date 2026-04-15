@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitstarz x Cryptoback Club — Exclusive Cashback Offer</title>
+  <meta name="description" content="Get Bitstarz's 100% deposit match + 180 free spins PLUS an exclusive 10% cashback from Cryptoback Club">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(170deg, #06060f 0%, #0a0a1a 40%, #0d0820 100%);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+    }
+
+    canvas#particles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .orb-blue {
+      top: -20%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 60%);
+    }
+    .orb-gold {
+      bottom: -20%; left: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(250,204,21,0.06) 0%, transparent 60%);
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+      animation: slideUp 0.6s ease;
+    }
+    .logo-box {
+      padding: 10px 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+    }
+    .logo-text {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.5px;
+    }
+    .header-x {
+      color: rgba(255,255,255,0.2);
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(250,204,21,0.08);
+      border: 1px solid rgba(250,204,21,0.2);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #facc15;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      animation: slideUp 0.7s ease;
+    }
+
+    /* Hero */
+    h1 {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      animation: slideUp 0.8s ease;
+      letter-spacing: -1px;
+    }
+    .grad-blue {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtext {
+      font-size: clamp(15px, 3vw, 18px);
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      line-height: 1.6;
+      max-width: 500px;
+      margin-bottom: 36px;
+      animation: slideUp 0.9s ease;
+    }
+    .subtext strong {
+      color: #facc15;
+      font-weight: 600;
+    }
+
+    /* Offer cards */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 40px;
+      animation: slideUp 1s ease;
+    }
+    .card-bitstarz {
+      background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.05));
+      border: 1px solid rgba(56,189,248,0.15);
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      animation: glowPulse 3s ease infinite;
+    }
+    .card-cbc {
+      background: linear-gradient(135deg, rgba(250,204,21,0.1), rgba(249,115,22,0.05));
+      border: 1px solid rgba(250,204,21,0.2);
+      border-radius: 16px;
+      padding: 24px 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-cbc .shine {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(250,204,21,0.06) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: badgeShine 3s ease infinite;
+    }
+    .card-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .card-bitstarz .card-label { color: rgba(255,255,255,0.4); }
+    .card-cbc .card-label { color: #facc15; position: relative; }
+    .card-big {
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .card-bitstarz .card-big { color: #38bdf8; }
+    .card-cbc .card-big { color: #facc15; position: relative; }
+    .card-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+    }
+    .card-cbc .card-sub { position: relative; }
+    .card-plus {
+      font-size: 20px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin: 4px 0 8px;
+    }
+    .card-small-num {
+      font-size: 24px;
+      font-weight: 800;
+      color: #38bdf8;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .card-small-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+    .card-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      margin-bottom: 12px;
+    }
+    .card-bottom-text {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      position: relative;
+      line-height: 1.4;
+    }
+
+    /* Form */
+    .form-wrap {
+      width: 100%;
+      max-width: 440px;
+      animation: slideUp 1.1s ease;
+    }
+    .form-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+    }
+    .form-card input {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      font-family: 'Outfit', sans-serif;
+      outline: none;
+      margin-bottom: 12px;
+      transition: border 0.2s;
+    }
+    .form-card input:focus {
+      border-color: rgba(56,189,248,0.4);
+    }
+    .form-card input.error {
+      border-color: rgba(239,68,68,0.5);
+      margin-bottom: 8px;
+    }
+    .error-msg {
+      font-size: 13px;
+      color: #ef4444;
+      margin-bottom: 12px;
+      padding-left: 4px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+    .cta-btn {
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #facc15, #eab308);
+      border: none;
+      border-radius: 12px;
+      color: #0a0a0f;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(250,204,21,0.15);
+      letter-spacing: 0.3px;
+    }
+    .cta-btn:hover {
+      background: linear-gradient(135deg, #facc15, #f97316);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(250,204,21,0.3);
+    }
+    .trust {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* How it works */
+    .how-section {
+      width: 100%;
+      max-width: 480px;
+      margin-top: 56px;
+      animation: slideUp 1.2s ease;
+    }
+    .how-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .how-step { text-align: center; padding: 20px 8px; }
+    .how-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: rgba(56,189,248,0.15);
+      margin-bottom: 8px;
+    }
+    .how-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .how-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.4;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+      width: 100%;
+    }
+    .footer-disclaimer {
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      line-height: 1.6;
+      max-width: 440px;
+      margin: 0 auto 12px;
+    }
+    .footer-brand {
+      font-size: 11px;
+      color: rgba(255,255,255,0.15);
+      font-family: 'Space Mono', monospace;
+    }
+    .footer-brand span { color: rgba(56,189,248,0.4); }
+
+    /* Activation overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(6,6,15,0.97);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      animation: fadeIn 0.3s ease;
+    }
+    .overlay.active { display: flex; }
+    .loader {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+    .pulse-ring {
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(56,189,248,0.4);
+      border-radius: 50%;
+      animation: pulseRing 2s ease-out infinite;
+    }
+    .pulse-ring:nth-child(2) { animation-delay: 0.6s; }
+    .pulse-ring:nth-child(3) { animation-delay: 1.2s; }
+    .spinner {
+      position: absolute;
+      inset: 8px;
+      border: 3px solid transparent;
+      border-top: 3px solid #38bdf8;
+      border-right: 3px solid #facc15;
+      border-radius: 50%;
+      animation: spinGlow 1s linear infinite;
+    }
+    .loader-core {
+      position: absolute;
+      inset: 20px;
+      background: radial-gradient(circle, rgba(56,189,248,0.3) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .overlay-text {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #38bdf8, #facc15, #38bdf8);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 2s linear infinite;
+      font-family: 'Outfit', sans-serif;
+    }
+    .progress-track {
+      width: 260px;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38bdf8, #facc15);
+      border-radius: 4px;
+      transition: width 0.1s linear;
+    }
+    .overlay-note {
+      color: rgba(255,255,255,0.35);
+      font-size: 13px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Animations */
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glowPulse { 0%,100% { box-shadow: 0 0 20px rgba(56,189,248,0.15); } 50% { box-shadow: 0 0 40px rgba(56,189,248,0.3); } }
+    @keyframes badgeShine { 0% { background-position: -100% center; } 100% { background-position: 200% center; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulseRing { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+    @keyframes spinGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles"></canvas>
+  <div class="orb orb-blue"></div>
+  <div class="orb orb-gold"></div>
+
+  <div class="content">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-box">
+        <span class="logo-text">
+          <span style="color:#38bdf8">CRYPTO</span><span style="color:rgba(255,255,255,0.5)">BACK</span><span style="color:#facc15">CLUB</span>
+        </span>
+      </div>
+      <span class="header-x">×</span>
+      <div class="logo-box">
+        <span class="logo-text">
+          <span style="color:#facc15">BIT</span><span style="color:#fff">STARZ</span><span style="margin-left:4px;font-size:12px;color:#facc15">★</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Badge -->
+    <div class="badge">⚡ Exclusive Partner Offer</div>
+
+    <!-- Hero -->
+    <h1>
+      <span>Get </span><span class="grad-blue">100% Deposit Match</span><br>
+      <span>+ </span><span class="grad-blue">180 Free Spins</span>
+    </h1>
+    <p class="subtext">Plus an <strong>exclusive 10% cashback</strong> only available through Cryptoback Club</p>
+
+    <!-- Offer Cards -->
+    <div class="cards">
+      <div class="card-bitstarz">
+        <div class="card-label">Bitstarz Welcome Bonus</div>
+        <div class="card-big">100%</div>
+        <div class="card-sub">Deposit Match</div>
+        <div class="card-plus">+</div>
+        <div class="card-small-num">180</div>
+        <div class="card-small-label">Free Spins</div>
+      </div>
+      <div class="card-cbc">
+        <div class="shine"></div>
+        <div class="card-label">CBC Exclusive</div>
+        <div class="card-big">+10%</div>
+        <div class="card-sub">Cashback Bonus</div>
+        <div class="card-divider"></div>
+        <div class="card-bottom-text">On top of Bitstarz's<br>welcome bonus</div>
+      </div>
+    </div>
+
+    <!-- Email Form -->
+    <div class="form-wrap">
+      <div class="form-card">
+        <input type="email" id="email" placeholder="Enter your email">
+        <div class="error-msg" id="error"></div>
+        <button class="cta-btn" id="cta">Activate My Cashback →</button>
+      </div>
+      <div class="trust">
+        <span>🔒 Secure</span>
+        <span>⚡ Instant Activation</span>
+        <span>🎁 No Hidden Fees</span>
+      </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="how-section">
+      <div class="how-title">How It Works</div>
+      <div class="how-grid">
+        <div class="how-step">
+          <div class="how-num">01</div>
+          <div class="how-label">Enter Email</div>
+          <div class="how-desc">Claim your exclusive cashback offer</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">02</div>
+          <div class="how-label">Sign Up</div>
+          <div class="how-desc">Create your Bitstarz account</div>
+        </div>
+        <div class="how-step">
+          <div class="how-num">03</div>
+          <div class="how-label">Get Paid</div>
+          <div class="how-desc">Earn 10% cashback on losses</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p class="footer-disclaimer">18+/19+ depending on province. This promotion is subject to eligibility verification. Terms and conditions apply. Gamble responsibly.</p>
+      <p class="footer-brand">Powered by <span>Cryptoback Club</span></p>
+    </div>
+
+  </div>
+
+  <!-- Activation Overlay -->
+  <div class="overlay" id="overlay">
+    <div class="loader">
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <div class="spinner"></div>
+      <div class="loader-core"></div>
+    </div>
+    <div class="overlay-text" id="overlay-step">Verifying eligibility...</div>
+    <div class="progress-track"><div class="progress-bar" id="progress"></div></div>
+    <p class="overlay-note">Do not close this page</p>
+  </div>
+
+  <script>
+    // Config
+    const AFFILIATE_URL = 'https://example.com/bitstarz-affiliate-link';
+
+    // Particles
+    (function() {
+      const c = document.getElementById('particles');
+      const ctx = c.getContext('2d');
+      let particles = [];
+      function resize() {
+        c.width = c.offsetWidth * 2;
+        c.height = c.offsetHeight * 2;
+        ctx.scale(2, 2);
+      }
+      resize();
+      window.addEventListener('resize', () => { ctx.setTransform(1,0,0,1,0,0); resize(); });
+      for (let i = 0; i < 60; i++) {
+        particles.push({
+          x: Math.random() * c.offsetWidth,
+          y: Math.random() * c.offsetHeight,
+          r: Math.random() * 1.5 + 0.5,
+          dx: (Math.random() - 0.5) * 0.3,
+          dy: (Math.random() - 0.5) * 0.3,
+          o: Math.random() * 0.4 + 0.1
+        });
+      }
+      function draw() {
+        ctx.clearRect(0, 0, c.offsetWidth, c.offsetHeight);
+        particles.forEach(p => {
+          p.x += p.dx; p.y += p.dy;
+          if (p.x < 0) p.x = c.offsetWidth;
+          if (p.x > c.offsetWidth) p.x = 0;
+          if (p.y < 0) p.y = c.offsetHeight;
+          if (p.y > c.offsetHeight) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(56,189,248,' + p.o + ')';
+          ctx.fill();
+        });
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = 'rgba(56,189,248,' + (0.06 * (1 - dist / 120)) + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // Form
+    const emailInput = document.getElementById('email');
+    const errorEl = document.getElementById('error');
+    const ctaBtn = document.getElementById('cta');
+    const overlay = document.getElementById('overlay');
+    const overlayStep = document.getElementById('overlay-step');
+    const progressBar = document.getElementById('progress');
+
+    function validate(v) {
+      v = v.trim();
+      if (!v) return 'Enter your email address';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return 'Enter a valid email';
+      return '';
+    }
+
+    ctaBtn.addEventListener('click', function() {
+      const err = validate(emailInput.value);
+      if (err) {
+        errorEl.textContent = err;
+        errorEl.classList.add('show');
+        emailInput.classList.add('error');
+        return;
+      }
+      errorEl.classList.remove('show');
+      emailInput.classList.remove('error');
+      console.log('Email captured:', emailInput.value);
+      startActivation();
+    });
+
+    emailInput.addEventListener('input', function() {
+      errorEl.classList.remove('show');
+      emailInput.classList.remove('error');
+    });
+
+    emailInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') ctaBtn.click();
+    });
+
+    function startActivation() {
+      overlay.classList.add('active');
+      const steps = [
+        'Verifying eligibility...',
+        'Activating 10% Cashback...',
+        'Preparing your bonus...',
+        'Redirecting to Bitstarz...'
+      ];
+      const duration = 4000;
+      const start = Date.now();
+      const timer = setInterval(function() {
+        const elapsed = Date.now() - start;
+        const p = Math.min(elapsed / duration, 1);
+        progressBar.style.width = (p * 100) + '%';
+        overlayStep.textContent = steps[Math.min(Math.floor(p * steps.length), steps.length - 1)];
+        if (p >= 1) {
+          clearInterval(timer);
+          setTimeout(function() {
+            window.location.href = AFFILIATE_URL;
+          }, 300);
+        }
+      }, 50);
+    }
+  </script>
+
+</body>
+</html>
